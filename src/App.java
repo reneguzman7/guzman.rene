@@ -1,3 +1,5 @@
+import java.io.File;
+
 import Utilitario.RGColor;
 import Utilitario.RGUtil;
 
@@ -14,13 +16,11 @@ public class App {
 
         rgLoginRene();
 
-        // RGUtil.rgClear();
 
         System.out.println("------------------------");
         System.out.println("Carga horaria de ALUMNOS");
         System.out.println("------------------------");
         System.out.println("Usuario: ");
-
 
         System.out.println("1. Visualizar Alumnos");
         System.out.println("2. Visualizar Asignaturas");
@@ -29,9 +29,12 @@ public class App {
         System.out.println("0. SALIR");
         int rgEntradaMenu = Integer.parseInt(RGUtil.sc.nextLine());
 
-
         switch (rgEntradaMenu) {
             case 1:
+                String rgDirectorio = "src\\\\Horarios";
+                rgImprimirNombresArchivosCSV(rgDirectorio);
+
+                
 
                 break;
             case 2:
@@ -87,5 +90,29 @@ public class App {
         System.out.println("Lo sentimos tu usuario y clave son incorrectos..!");
         // System.exit(0);
         return false;
+    }
+
+    public static void rgImprimirNombresArchivosCSV(String rgDirectorio) {
+        File rgCarpeta = new File(rgDirectorio);
+
+        // Verificar si el directorio existe y es una carpeta
+        if (rgCarpeta.exists() && rgCarpeta.isDirectory()) {
+            File[] rgArchivos = rgCarpeta.listFiles();
+
+            // Recorrer los archivos en el directorio
+            for (File archivo : rgArchivos) {
+                // Verificar si es un archivo CSV
+                if (archivo.isFile() && archivo.getName().endsWith(".csv")) {
+                    String nombreArchivo = archivo.getName();
+                    int indicePunto = nombreArchivo.lastIndexOf('.');
+                    if (indicePunto > 0) {
+                        String nombreSinExtension = nombreArchivo.substring(0, indicePunto);
+                        System.out.println(nombreSinExtension);
+                    }
+                }
+            }
+        } else {
+            System.out.println("El directorio especificado no existe.");
+        }
     }
 }

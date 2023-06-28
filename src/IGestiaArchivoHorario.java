@@ -1,6 +1,6 @@
 public interface IGestiaArchivoHorario {
     
-    public void readHorarioAlumnos();
+    public void readHorarioAlumnos(String rgDirectorioHorarios);
     public void showAsignatura();
     public void showAlumnos();
 
