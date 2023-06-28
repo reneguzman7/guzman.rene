@@ -1,7 +1,5 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.Scanner;
 
 import Utilitario.RGColor;
 import Utilitario.RGUtil;
