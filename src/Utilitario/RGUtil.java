@@ -2,7 +2,7 @@ package Utilitario;
 
 import java.util.Scanner;
 
-public class Util {
+public class RGUtil {
 
     //public static final String Colores = null;
     public static  Scanner sc = new Scanner(System.in);
@@ -10,7 +10,7 @@ public class Util {
     /**
      * limpia la consola
      */
-    public final static void clear() {
+    public final static void rgClear() {
         try {
             String operatingSystem = System.getProperty("os.name"); // Check the current operating system
 

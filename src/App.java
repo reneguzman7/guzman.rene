@@ -1,57 +1,75 @@
-import Utilitario.Util;
+import Utilitario.RGColor;
+import Utilitario.RGUtil;
 
 public class App {
     public static void main(String[] args) {
 
-        Util.clear();
+        RGUtil.rgClear();
 
-        rgPresentarDatos();
+        final String RGCEDULA = "1750366286";
+        final String RGCORREO = "RENE.GUZMAN@EPN.EDU.EC";
+        final String RGNOMBRE = "rene alejandro guzman moreira";
 
+        rgPresentarDatos(RGCEDULA, RGCORREO, RGNOMBRE);
 
         rgLoginRene();
-        
+
+        // RGUtil.rgClear();
+
+        System.out.println("------------------------");
+        System.out.println("Carga horaria de ALUMNOS");
+        System.out.println("------------------------");
+        System.out.println("Usuario: ");
 
 
+        System.out.println("1. Visualizar Alumnos");
+        System.out.println("2. Visualizar Asignaturas");
+        System.out.println("3. Visualizar Horario");
+        System.out.println("4. Visualizar Horario de una asignatura");
+        System.out.println("0. SALIR");
+        int rgEntradaMenu = Integer.parseInt(RGUtil.sc.nextLine());
 
 
+        switch (rgEntradaMenu) {
+            case 1:
 
+                break;
+            case 2:
 
+                break;
+            case 3:
 
+                break;
+            case 4:
 
+                break;
+            case 5:
 
+                break;
 
+            default:
+                break;
+        }
 
-
-
-
-
-
-
-
-        
     }
 
-    public static void rgPresentarDatos() {
-        final String CEDULA = "1750366286";
-        final String CORREO = "RENE.GUZMAN@EPN.EDU.EC";
-        final String NOMBRE = "rene alejandro guzman moreira";
-
-        System.out.println("-CEDULA: " + CEDULA);
-        System.out.println("-CORREO: " + CORREO.toLowerCase());
-        System.out.println("-NOMBRE: " + NOMBRE.toUpperCase());
+    public static void rgPresentarDatos(String RGCEDULA, String RGCORREO, String RGNOMBRE) {
+        System.out.println(RGColor.BOLD_CYAN + "-CEDULA: " + RGCEDULA);
+        System.out.println(RGColor.BOLD_CYAN + "-CORREO: " + RGCORREO.toLowerCase());
+        System.out.println(RGColor.BOLD_CYAN + "-NOMBRE: " + RGNOMBRE.toUpperCase());
     }
 
-     public static boolean rgLoginRene() {
+    public static boolean rgLoginRene() {
         int rgIntentosMax = 0;
         String rgUser;
         String rgClave;
 
         do {
-            System.out.println("-------------------");
+            System.out.println(RGColor.RESET + "-------------------");
             System.out.print("+ Usuario: ");
-            rgUser = Util.sc.nextLine();
+            rgUser = RGUtil.sc.nextLine();
             System.out.print("+ Clave: ");
-            rgClave = Util.sc.nextLine();
+            rgClave = RGUtil.sc.nextLine();
             System.out.println("-------------------");
 
             boolean rgLoginExitoso = (((rgUser.equals("profe")) && (rgClave.equals("1234")))
