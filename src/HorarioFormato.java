@@ -52,13 +52,24 @@ public class HorarioFormato {
     public void setRgObservacion(String rgObservacion) {
         this.rgObservacion = rgObservacion;
     }
-    
+
     HashSet<String> rgHoraLunes = new HashSet<>();
     HashSet<String> rgHoraMartes = new HashSet<>();
     HashSet<String> rgHoraMiercoles = new HashSet<>();
     HashSet<String> rgHoraJueves = new HashSet<>();
     HashSet<String> rgHoraViernes = new HashSet<>();
     HashSet<String> rgHoraSabado = new HashSet<>();
+
+    
+    public String[] separar(String rgCadena) {
+        String[] rgStrSeparado = rgCadena.split(",");
+        return rgStrSeparado;
+    }
+
+    
+  
+    
+    
 
 
     

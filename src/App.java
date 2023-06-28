@@ -1,11 +1,17 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.Scanner;
 
 import Utilitario.RGColor;
 import Utilitario.RGUtil;
 
+/**
+ * @author reneguzman7
+ */
 public class App {
     public static void main(String[] args) {
-
+        boolean rgControl = true;
         RGUtil.rgClear();
 
         final String RGCEDULA = "1750366286";
@@ -16,52 +22,101 @@ public class App {
 
         rgLoginRene();
 
+        System.out.println(RGColor.BOLD_PURPLE + "------------------------");
+        System.out.println(RGColor.BOLD_PURPLE + "Carga horaria de ALUMNOS");
+        System.out.println(RGColor.BOLD_PURPLE + "------------------------");
+        System.out.println(RGColor.BOLD_PURPLE + "Usuario: ");
 
-        System.out.println("------------------------");
-        System.out.println("Carga horaria de ALUMNOS");
-        System.out.println("------------------------");
-        System.out.println("Usuario: ");
+        do {
 
-        System.out.println("1. Visualizar Alumnos");
-        System.out.println("2. Visualizar Asignaturas");
-        System.out.println("3. Visualizar Horario");
-        System.out.println("4. Visualizar Horario de una asignatura");
-        System.out.println("0. SALIR");
-        int rgEntradaMenu = Integer.parseInt(RGUtil.sc.nextLine());
+            rgOpcionesMenu();
 
-        switch (rgEntradaMenu) {
-            case 1:
-                String rgDirectorio = "src\\\\Horarios";
-                rgImprimirNombresArchivosCSV(rgDirectorio);
+            int rgEntradaMenu = Integer.parseInt(RGUtil.sc.nextLine());
+            if (rgEntradaMenu >= 0 && rgEntradaMenu <= 4) {
+                rgControl = false;
+            } else {
+                System.out.println("Opcion no valida \n");
+                rgControl = true;
+            }
 
-                
+            switch (rgEntradaMenu) {
+                case 1:
+                    String rgDirectorio = "src\\\\Horarios";
+                    rgImprimirNombresArchivosCSV(rgDirectorio);
 
-                break;
-            case 2:
+                    rgControl = rgRepetirMenu();
 
-                break;
-            case 3:
+                    break;
+                case 2:
 
-                break;
-            case 4:
 
-                break;
-            case 5:
+                    break;
+                case 3:
 
-                break;
+                    break;
+                case 4:
 
-            default:
-                break;
-        }
+                    break;
+                case 0:
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Opcion no valida");
+                    break;
+            }
+
+        } while (rgControl == true);
 
     }
 
+    public static void rgImprimirListadoSinRepetidos(HashSet<String> rgElementosArchivo) {
+        System.out.println("[+] Listado de <<tema-asignado>>:");
+
+        for (String rgTemaAsignado : rgElementosArchivo) {
+            System.out.println("\t- " + rgTemaAsignado);
+        }
+    }
+
+    private static boolean rgRepetirMenu() {
+        boolean rgControl;
+        System.out.println("\n Desea repetir el proceso SI O NO");
+        String rgRespuesta = RGUtil.sc.nextLine();
+        if (rgRespuesta.equalsIgnoreCase("SI")) {
+            rgControl = true;
+        } else {
+            rgControl = false;
+        }
+        return rgControl;
+    }
+
+    private static void rgOpcionesMenu() {
+        System.out.println(RGColor.BOLD_BRIGHT_YELLOW + "1. Visualizar Alumnos");
+        System.out.println(RGColor.BOLD_BRIGHT_YELLOW + "2. Visualizar Asignaturas");
+        System.out.println(RGColor.BOLD_BRIGHT_YELLOW + "3. Visualizar Horario");
+        System.out.println(RGColor.BOLD_BRIGHT_YELLOW + "4. Visualizar Horario de una asignatura");
+        System.out.println(RGColor.BOLD_BRIGHT_YELLOW + "0. SALIR");
+    }
+
+    /**
+     * Esta funcion recibe como parametro las constantes de
+     * cedula, correo y nombre para presentarlas al inicio del progra
+     * 
+     * @param RGCEDULA
+     * @param RGCORREO
+     * @param RGNOMBRE
+     */
     public static void rgPresentarDatos(String RGCEDULA, String RGCORREO, String RGNOMBRE) {
         System.out.println(RGColor.BOLD_CYAN + "-CEDULA: " + RGCEDULA);
         System.out.println(RGColor.BOLD_CYAN + "-CORREO: " + RGCORREO.toLowerCase());
-        System.out.println(RGColor.BOLD_CYAN + "-NOMBRE: " + RGNOMBRE.toUpperCase());
+        System.out.println(RGColor.BOLD_CYAN + "-NOMBRE: " + RGNOMBRE.toUpperCase() + "\n");
     }
 
+    /**
+     * Esta funcion controla el login para ingresar a la aplicacion
+     * 
+     * @return
+     */
     public static boolean rgLoginRene() {
         int rgIntentosMax = 0;
         String rgUser;
@@ -88,10 +143,18 @@ public class App {
             }
         } while (rgIntentosMax < 3);
         System.out.println("Lo sentimos tu usuario y clave son incorrectos..!");
-        // System.exit(0);
+        System.exit(0);
         return false;
     }
 
+    /**
+     * Est funcion recibe como parametro un string que es la ruta donde se
+     * encuentran los archivos imprime los nombres de los archivos CSV
+     * en el directorio especificado.
+     * 
+     * @param rgDirectorio La ruta del directorio donde se buscarán los archivos
+     *                     CSV.
+     */
     public static void rgImprimirNombresArchivosCSV(String rgDirectorio) {
         File rgCarpeta = new File(rgDirectorio);
 
@@ -100,14 +163,14 @@ public class App {
             File[] rgArchivos = rgCarpeta.listFiles();
 
             // Recorrer los archivos en el directorio
-            for (File archivo : rgArchivos) {
-                // Verificar si es un archivo CSV
-                if (archivo.isFile() && archivo.getName().endsWith(".csv")) {
-                    String nombreArchivo = archivo.getName();
-                    int indicePunto = nombreArchivo.lastIndexOf('.');
-                    if (indicePunto > 0) {
-                        String nombreSinExtension = nombreArchivo.substring(0, indicePunto);
-                        System.out.println(nombreSinExtension);
+            for (File rgArchivo : rgArchivos) {
+                // Verificar si es un archivo CSV e imprimir el nombre sin .csv
+                if (rgArchivo.isFile() && rgArchivo.getName().endsWith(".csv")) {
+                    String rgNombreArchivo = rgArchivo.getName();
+                    int rgIndicePunto = rgNombreArchivo.lastIndexOf('.');
+                    if (rgIndicePunto > 0) {
+                        String rgNombreSinExtension = rgNombreArchivo.substring(0, rgIndicePunto);
+                        System.out.println(RGColor.BOLD_RED + rgNombreSinExtension);
                     }
                 }
             }
