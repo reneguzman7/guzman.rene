@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import Utilitario.RGColor;
@@ -47,10 +51,32 @@ public class App {
                     break;
                 case 2:
 
+                    String carpetaCSV = "src\\\\\\\\Horarios"; // Especifica la ruta de la carpeta aquí
+                    HashSet<String> rgTemasAsignados = new HashSet<>();
+                    HashMap<String, String> rgAsignaciones = new HashMap<>();
+
+                    File rgCarpeta = new File(carpetaCSV);
+                    if (!rgCarpeta.isDirectory()) {
+                        System.out.println("La ruta proporcionada no es una carpeta válida.");
+                        return;
+                    }
+
+                    File[] rgArchivosCSV = rgCarpeta.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));
+
+                    for (File rgArchivo : rgArchivosCSV) {
+                        leerArchivoCSV(rgArchivo.getAbsolutePath(), rgTemasAsignados, rgAsignaciones);
+                    }
+
+                    System.out.println("[+] Listado de temas asignados:");
+
+                    for (String rgTema : rgTemasAsignados) {
+                        System.out.println("\t-" + rgAsignaciones.get(rgTema));
+                    }
 
                     break;
                 case 3:
-
+                    System.out.println(
+                            "Hora\t(l) Lunes\t(m) Martes\t(x) Miercoles\t(j) Jueves\t(v) Viernes\t(s)Sabado\t");
                     break;
                 case 4:
 
@@ -68,15 +94,32 @@ public class App {
 
     }
 
-    public static void rgImprimirListadoSinRepetidos(HashSet<String> rgElementosArchivo) {
-        System.out.println("[+] Listado de <<tema-asignado>>:");
-
-        for (String rgTemaAsignado : rgElementosArchivo) {
-            System.out.println("\t- " + rgTemaAsignado);
+     public static void leerArchivoCSV(String rgArchivo, HashSet<String> rgTemasAsignados, HashMap<String, String> rgAsignaciones) {
+        try (BufferedReader rgBr = new BufferedReader(new FileReader(rgArchivo))) {
+            String rgLinea;
+            while ((rgLinea = rgBr.readLine()) != null) {
+                String[] rgDatos = rgLinea.split(";");
+                if (rgDatos.length >= 3) {
+                    String rgTema = rgDatos[2];
+                    String rgAsignatura = rgDatos[1] + "-" + rgDatos[3] + "\t" + rgDatos[2];
+                    rgTemasAsignados.add(rgTema);
+                    rgAsignaciones.put(rgTema, rgAsignatura);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private static boolean rgRepetirMenu() {
+    // public static void rgImprimirListadoSinRepetidos(HashSet<String> rgElementosArchivo) {
+    //     System.out.println("[+] Listado de <<tema-asignado>>:");
+
+    //     for (String rgTemaAsignado : rgElementosArchivo) {
+    //         System.out.println("\t- " + rgTemaAsignado);
+    //     }
+    // }
+
+    public static boolean rgRepetirMenu() {
         boolean rgControl;
         System.out.println("\n Desea repetir el proceso SI O NO");
         String rgRespuesta = RGUtil.sc.nextLine();
